@@ -24,7 +24,8 @@ urlpatterns = [
     path('hod/', include('app_hod.urls')),
     path('staff/', include('app_staff.urls')),
     path('student/', include('app_student.urls')),
-    path('master/', views.master_layout, name='masterlayout'),
+    path('master/', views.master_layout, name='master'),
+    path('', include('authentication.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
