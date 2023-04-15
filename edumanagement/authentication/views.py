@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth.models import User
 from django.contrib import auth
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from .models import UserProfile
+from django.contrib import messages
 # Create your views here.
 
 # Define the LoginView class which handles the /login endpoint
@@ -32,20 +33,11 @@ class LoginView(View):
                 login(request, user)
                 return redirect('studentpage')
         else:
-            print('User not found')
+            messages.success(request, "Invalid login credentials. Please try again.")
         # Redirect the user back to the login page
         return redirect('login')
 
 
-# Define view functions that render templates for the respective user types
-def hod_page(request):
-    return render(request, 'web/hod.html')
-
-def staff_page(request):
-    return render(request, 'web/staff.html')
-
-def student_page(request):
-    return render(request, 'web/student.html')
 
 
 # Define the RegistrationView class which handles the /register endpoint
@@ -72,3 +64,10 @@ class RegistrationView(View):
         
         # Redirect the user back to the registration page
         return redirect('register')
+
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        messages.success(request, "You've Successfully Logged Out!")
+        return redirect('login')
+    
