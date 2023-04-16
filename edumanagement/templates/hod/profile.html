@@ -1,0 +1,62 @@
+{% extends 'layouts/master.html' %}
+
+{% block content %}
+<div class="container pt-5 d-flex align-items-center justify-content-center">
+    <div class="card">
+      {% include "partials/_message.html" %}
+      <div class="card-header bg-success text-white text-center">
+        <h5><i class="fas fa-lock me-2"></i>Hi ! {{ user.first_name }} {{ user.last_name }}. Update your profile !</h5>
+      </div>
+      <div class="card-body">
+        <form action="{% url 'hodprofile-update' %}" method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="id" value="{{ user.id }}">
+          <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-user"></i></span>
+              <input type="text" name="username" class="form-control form-control-sm" value="{{user.username}}" readonly>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="usertype" class="form-label">Usertype</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-user"></i></span>
+              <input type="text" name="usertype" class="form-control form-control-sm" value="{{user.userprofile.usertype}}" readonly>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="first_name" class="form-label">First name</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-user"></i></span>
+              <input type="text" name="first_name" class="form-control form-control-sm" value="{{user.first_name}}">
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="last_name" class="form-label">Last name</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-user"></i></span>
+              <input type="text" name="last_name" class="form-control form-control-sm" value="{{user.last_name}}">
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+              <input type="email" name="email" class="form-control form-control-sm" value="{{user.email}}">
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-lock"></i></span>
+              <input type="password" name="password" class="form-control form-control-sm">
+            </div>
+          </div>
+          <button type="submit" class="btn btn-success col-12 mb-3">UPDATE</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endblock %}

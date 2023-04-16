@@ -11,7 +11,7 @@ from django.contrib import messages
 class LoginView(View):
     # Handles HTTP GET requests
     def get(self, request):
-        return render(request,'web/login.html')
+        return render(request,'authentication/login.html')
     
     # Handles HTTP POST requests
     def post(self, request):
@@ -33,7 +33,7 @@ class LoginView(View):
                 login(request, user)
                 return redirect('studentpage')
         else:
-            messages.success(request, "Invalid login credentials. Please try again.")
+            messages.error(request, "Invalid login credentials. Please try again.")
         # Redirect the user back to the login page
         return redirect('login')
 
@@ -43,7 +43,7 @@ class LoginView(View):
 # Define the RegistrationView class which handles the /register endpoint
 class RegistrationView(View):
     def get(self, request):
-        return render(request, 'web/register.html')
+        return render(request, 'authentication/register.html')
 
     def post(self, request):
         # Retrieve the user's registration information submitted in the POST request
