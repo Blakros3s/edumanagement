@@ -9,3 +9,6 @@ class UserProfile(models.Model):
 
     # Stores the type of user, such as "hod", "staff", or "student".
     usertype = models.CharField(max_length=50)
+
+    def __str__(self):
+        return f"{self.user.first_name} {self.user.last_name}"
