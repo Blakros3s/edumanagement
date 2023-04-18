@@ -1,7 +1,7 @@
 {% extends 'layouts/master.html' %}
 
 {% block title %}
-    Add Student
+    Edit Student
 {% endblock title %}
 
 {% block content %}
@@ -9,37 +9,38 @@
   <div class="card w-75">
     {% include "partials/_message.html" %}
     <div class="card-header bg-success text-white text-center">
-      <h5><i class="fas fa-lock me-2"></i>Add a new student</h5>
+      <h5><i class="fas fa-lock me-2"></i>Edit student information</h5>
     </div>
     <div class="card-body">
-      <form action="{% url 'add-student' %}" method="POST">
+      <form action="{% url 'update-student' %}" method="POST">
         {% csrf_token %}
+        <input type="hidden" name="id" value="{{ data.id }}">
         <div class="mb-3">
           <label for="first_name" class="form-label">First Name</label>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-id-card"></i></span>
-            <input type="text" name="first_name" class="form-control form-control-sm">
+            <input type="text" name="first_name" value="{{ data.user.user.first_name }}" class="form-control form-control-sm">
           </div>
         </div>
         <div class="mb-3">
           <label for="last_name" class="form-label">Last Name</label>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-id-card"></i></span>
-            <input type="text" name="last_name" class="form-control form-control-sm">
+            <input type="text" name="last_name" value="{{ data.user.user.last_name }}" class="form-control form-control-sm">
           </div>
         </div>
         <div class="mb-3">
           <label for="email" class="form-label">Email</label>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-id-card"></i></span>
-            <input type="email" name="email" class="form-control form-control-sm">
+            <input type="email" name="email"  value="{{ data.user.user.email }}" class="form-control form-control-sm">
           </div>
         </div>
         <div class="mb-3">
           <label for="username" class="form-label">Username</label>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-id-card"></i></span>
-            <input type="text" name="username" class="form-control form-control-sm">
+            <input type="text" name="username" value="{{ data.user.user.username }}" class="form-control form-control-sm">
           </div>
         </div>
         <div class="mb-3">
@@ -53,7 +54,7 @@
           <label for="student_id" class="form-label">Student ID</label>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-id-card"></i></span>
-            <input type="text" name="student_id" class="form-control form-control-sm">
+            <input type="text" name="student_id" value="{{ data.student_id }}" class="form-control form-control-sm">
           </div>
         </div>
         <div class="mb-3">
@@ -61,9 +62,9 @@
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-venus-mars"></i></span>
             <select name="gender" class="form-select form-select-sm">
-              <option value="" {% if not user.userprofile.gender %}selected{% endif %}>Select Gender</option>
-              <option value="M" {% if user.userprofile.gender == 'M' %}selected{% endif %}>Male</option>
-              <option value="F" {% if user.userprofile.gender == 'F' %}selected{% endif %}>Female</option>
+              <option value="" {% if not data.gender %}selected{% endif %}>Select Gender</option>
+              <option value="M" {% if data.gender == 'M' %}selected{% endif %}>Male</option>
+              <option value="F" {% if data.gender == 'F' %}selected{% endif %}>Female</option>
             </select>
           </div>
         </div>
@@ -71,21 +72,21 @@
           <label for="dob" class="form-label">Date of Birth</label>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-            <input type="date" name="dob" class="form-control form-control-sm">
+            <input type="date" name="dob" value="{{ dob }}" class="form-control form-control-sm">
           </div>
         </div>
         <div class="mb-3">
           <label for="address" class="form-label">Address</label>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
-            <textarea name="address" class="form-control form-control-sm"></textarea>
+            <textarea name="address" class="form-control form-control-sm"> {{ data.address }}</textarea>
           </div>
         </div>
         <div class="mb-3">
           <label for="phone_number" class="form-label">Phone Number</label>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-phone"></i></span>
-            <input type="text" name="phone_number" class="form-control form-control-sm">
+            <input type="text" name="phone_number" value="{{ data.phone_number }}" class="form-control form-control-sm">
           </div>
         </div>
         <div class="mb-3">
@@ -93,8 +94,8 @@
             <div class="input-group">
               <span class="input-group-text"><i class="fas fa-graduation-cap"></i></span>
               <select name="course" class="form-select form-select-sm">
-                {% for data in course %}
-                    <option value="{{ data.id }}" selected>{{ data.name }}</option>
+                {% for cor in course %}
+                <option value="{{ cor.id }}" {% if cor.id == data.course.id %}selected{% endif %}>{{ cor.name }}</option>
                 {% endfor %}
               </select>
             </div>
@@ -104,12 +105,12 @@
             <label for="enrollment_year" class="form-label">Enrollment Year</label>
             <div class="input-group">
               <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-              <input type="text" name="enrollment_year" class="form-control form-control-sm">
+              <input type="text" name="enrollment_year" value="{{ data.enrollment_year }}" class="form-control form-control-sm">
             </div>
           </div>
           </div>
           
-          <button type="submit" class="btn btn-success col-12 mb-3">ADD</button>
+          <button type="submit" class="btn btn-success col-12 mb-3">EDIT</button>
         </form>
       </div>
     </div>

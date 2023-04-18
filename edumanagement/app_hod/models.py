@@ -2,15 +2,16 @@ from django.db import models
 from authentication.models import UserProfile
 
 # Create your models here.
-
+# Model class to represent course details
 class Course(models.Model):
     name = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
     def __str__(self):
         return self.name
     
-    
+# Model class to represent student details 
 class Student(models.Model):
     # Links to a user profile via a OneToOneField
     user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
