@@ -99,19 +99,24 @@ def add_student(request):
      }
     return render(request, 'hod/student_add.html',context)
 
-
+# View function to list all the students
+@login_required(login_url='/login/')
 def student_index(request):
     # Query all students from the database
     student = Student.objects.all()
     context = {"data": student}
     return render(request, 'hod/student_index.html', context)
 
+# View function to view student details
+@login_required(login_url='/login/')
 def student_view(request, id):
     # Query a student from the database based on the id parameter passed in the URL
     student = Student.objects.get(id=id)
     context = {"data": student}
     return render(request, 'hod/student_view.html', context)
 
+# View function to edit student details
+@login_required(login_url='/login/')
 def student_edit(request, id):
     student = Student.objects.get(id=id)
     courses = Course.objects.all()
@@ -120,6 +125,8 @@ def student_edit(request, id):
     context = {"data": student, "course": courses, "dob": dob}
     return render(request, 'hod/student_edit.html', context)
 
+# View function to delete existing student record
+@login_required(login_url='/login/')
 def student_delete(request, id):
     student = Student.objects.get(id=id)
     # Delete the student object from the database
@@ -127,6 +134,7 @@ def student_delete(request, id):
     messages.success(request, "Student record deleted successfully")
     return redirect("list-student")
 
+# View function to update student information
 def student_update(request):
     # Check if the request method is POST
     if request.method == "POST":
@@ -161,3 +169,91 @@ def student_update(request):
         return redirect('edit-student',id=student.id)
     # If the request method is not POST, redirect to the edit page with the given student ID
     return redirect('edit-student',id=request.POST.get('id'))
+
+# View function to update user profile details
+def profile_update(request):
+    # Check if the request method is POST
+    if request.method == "POST":
+        # Get the user object to be updated
+        user = User.objects.get(id = request.POST.get('id'))
+        # Update the user's first name, last name, and email fields from the form data
+        user.first_name = request.POST.get('first_name')
+        user.last_name = request.POST.get('last_name')
+        user.email = request.POST.get('email')
+        password = request.POST.get('password')
+        # Check if a new password was set
+        if password is not None and password.strip() != "":
+            # Set the user's password to the new password and update the user's session authentication hash
+            user.set_password(password)
+            update_session_auth_hash(request, user)
+        # Save the updated user object
+        user.save()
+        # Display a success message and redirect to the profile page
+        messages.success(request, "Profile Updated Successfully")
+        return redirect('hodprofile')
+    # If the request method is not POST, redirect to the profile page
+    return redirect('hodprofile')
+
+# View function to add a new course
+@login_required(login_url='/login/')
+def add_course(request):
+    # Check if the form was submitted
+    if request.method == "POST":
+        course_name = request.POST.get('course_name')
+
+        # Check if course name already exists
+        if Course.objects.filter(name=course_name).exists():
+            messages.warning(request, "Course already exists!")
+            return redirect('add-course')
+        else:
+            # Create a new course with the given course name
+            course = Course(name=course_name)
+            course.save()
+
+            messages.success(request, "Course successfully added!")
+            return redirect('add-course')
+    return render(request, 'hod/course_add.html')
+
+# View function to list all courses
+@login_required(login_url='/login/')
+def course_index(request):
+    course = Course.objects.all()
+    context = {"data": course}
+    return render(request,'hod/course_index.html', context)
+
+
+# View function to edit course
+@login_required(login_url='/login/')
+def course_edit(request, id):
+    course = Course.objects.get(id=id)
+    context = {"data": course}
+    return render(request, 'hod/course_edit.html', context)
+
+
+# View function to delete a course
+@login_required(login_url='/login/')
+def course_delete(request, id):
+    course = Course.objects.get(id=id)
+    # Delete the course object from the database
+    course.delete()
+    messages.success(request, "Course deleted successfully")
+    return redirect("list-course")
+
+# View function to update a course
+def course_update(request):
+    # Check if the form was submitted
+    if request.method == "POST":
+        course = Course.objects.get(id= request.POST.get('id'))
+        course.name = request.POST.get('course_name')
+
+        # Check if course name already exists
+        if Course.objects.filter(name=course.name).exists():
+            messages.warning(request, "Course already exists!")
+            return redirect('edit-course')
+        else:
+            # Create a new course with the given course name
+            course.save()
+            messages.success(request, "Course Updated successfully")
+            return redirect('edit-course', id=course.id)
+    return redirect('edit-course', id= request.POST.get('id'))
+

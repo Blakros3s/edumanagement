@@ -33,8 +33,12 @@
           <li class="nav-item">
             <a class="nav-link" href="#">Notifications</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Profile</a>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Course</a>
+            <ul class="dropdown-menu" aria-labelledby="dropdown01">
+              <li><a class="dropdown-item" href="{% url 'add-course' %}">Add Course</a></li>
+              <li><a class="dropdown-item" href="{% url 'list-course' %}">View Course</a></li>
+            </ul>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="dropdown02" data-bs-toggle="dropdown" aria-expanded="false">Student</a>
@@ -44,8 +48,8 @@
             </ul>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Teacher</a>
-            <ul class="dropdown-menu" aria-labelledby="dropdown01">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">Teacher</a>
+            <ul class="dropdown-menu" aria-labelledby="dropdown03">
               <li><a class="dropdown-item" href="#">Add Teacher</a></li>
               <li><a class="dropdown-item" href="#">View Teacher</a></li>
             </ul>
