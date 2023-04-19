@@ -1,0 +1,36 @@
+{% extends "layouts/master.html" %}
+
+{% block title %}
+    Staff Information
+{% endblock title %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center">
+        <h1 class="display-5 mb-2"><i class="fas fa-user"></i> Staff Details</h1>
+        <a href="{% url 'edit-staff' data.id %}" class="btn btn-warning"><i class="fas fa-pencil-alt"></i>Edit</a>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-6">
+            <h2 class="mb-4">Personal Information</h2>
+            <ul class="list-group">
+                <li class="list-group-item"><strong>Name:</strong> {{ data.user.user.first_name }} {{ data.user.user.last_name }}</li>
+                <li class="list-group-item"><strong>Staff ID:</strong> {{ data.staff_id }}</li>
+                <li class="list-group-item"><strong>Email:</strong> {{ data.user.user.email }}</li>
+                <li class="list-group-item"><strong>Username:</strong> {{ data.user.user.username }}</li>
+                <li class="list-group-item"><strong>Gender:</strong> {{ data.gender }}</li>
+                <li class="list-group-item"><strong>Date of Joining:</strong> {{ data.doj }}</li>
+                <li class="list-group-item"><strong>Qualification:</strong> {{ data.qualification }}</li>
+                <li class="list-group-item"><strong>Phone Number:</strong> {{ data.phone_number }}</li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h2 class="mb-4">Department Information</h2>
+            <ul class="list-group">
+                <li class="list-group-item"><strong>Department:</strong> {{ data.course }}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock content %}

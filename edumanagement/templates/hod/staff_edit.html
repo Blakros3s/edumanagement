@@ -1,0 +1,109 @@
+{% extends 'layouts/master.html' %}
+
+{% block title %}
+    Edit Staff
+{% endblock title %}
+
+{% block content %}
+<div class="container pt-5 d-flex align-items-center justify-content-center">
+  <div class="card w-75">
+    {% include "partials/_message.html" %}
+    <div class="card-header bg-success text-white text-center">
+      <h5><i class="fas fa-lock me-2"></i>Edit Staff Information</h5>
+    </div>
+    <div class="card-body">
+      <form action="{% url 'update-staff' %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="id" value="{{ data.id }}">
+        <div class="mb-3">
+          <label for="first_name" class="form-label">First Name</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+            <input type="text" name="first_name" value="{{ data.user.user.first_name }}" class="form-control form-control-sm">
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="last_name" class="form-label">Last Name</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+            <input type="text" name="last_name" value="{{ data.user.user.last_name }}" class="form-control form-control-sm">
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+            <input type="email" name="email"  value="{{ data.user.user.email }}" class="form-control form-control-sm">
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+            <input type="text" name="username" value="{{ data.user.user.username }}" class="form-control form-control-sm">
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+            <input type="password" name="password" class="form-control form-control-sm">
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="staff_id" class="form-label">Staff ID</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+            <input type="text" name="staff_id" value="{{ data.staff_id }}" class="form-control form-control-sm">
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="gender" class="form-label">Gender</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-venus-mars"></i></span>
+            <select name="gender" class="form-select form-select-sm">
+              <option value="" {% if not data.gender %}selected{% endif %}>Select Gender</option>
+              <option value="M" {% if data.gender == 'M' %}selected{% endif %}>Male</option>
+              <option value="F" {% if data.gender == 'F' %}selected{% endif %}>Female</option>
+            </select>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="doj" class="form-label">Date of Joining</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+            <input type="date" name="doj" value="{{ doj }}" class="form-control form-control-sm">
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="qualification" class="form-label">Qualification</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+            <textarea name="qualification" class="form-control form-control-sm"> {{ data.qualification }}</textarea>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="phone_number" class="form-label">Phone Number</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-phone"></i></span>
+            <input type="text" name="phone_number" value="{{ data.phone_number }}" class="form-control form-control-sm">
+          </div>
+        </div>
+        <div class="mb-3">
+            <label for="course" class="form-label">Course</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-graduation-cap"></i></span>
+              <select name="course" class="form-select form-select-sm">
+                {% for cor in course %}
+                <option value="{{ cor.id }}" {% if cor.id == data.course.id %}selected{% endif %}>{{ cor.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          
+          <button type="submit" class="btn btn-success col-12 mb-3">EDIT</button>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

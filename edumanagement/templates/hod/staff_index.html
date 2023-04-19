@@ -1,0 +1,41 @@
+{% extends "layouts/master.html" %}
+
+{% block title %}
+    List Students
+{% endblock title %}
+
+{% block content %}
+<div class="container my-5">
+    {% include "partials/_message.html" %}
+    <div class="d-flex justify-content-between align-items-center">
+        <h1 class="display-5 mb-2"><i class="fas fa-list"></i> Staffs</h1>
+        <a href="{% url 'add-staff' %}" class="btn btn-primary"><i class="fas fa-plus"></i> Add Staff</a>
+    </div>
+    <table class="table mt-4">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">Name</th>
+                <th scope="col">Staff ID</th>
+                <th scope="col">Course</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for staff in data %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ staff.user.user.first_name }} {{ staff.user.user.last_name }}</td>
+                <td>{{ staff.staff_id }}</td>
+                <td>{{ staff.course }}</td>
+                <td>
+                    <a href="{% url 'view-staff' staff.id %}" class="btn btn-sm btn-info me-2"><i class="fas fa-eye"></i> View</a>
+                    <a href="{% url 'edit-staff' staff.id %}" class="btn btn-sm btn-warning me-2"><i class="fas fa-pencil-alt"></i> Edit</a>
+                    <a href="{% url 'delete-staff' staff.id %}" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i> Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

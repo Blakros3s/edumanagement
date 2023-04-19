@@ -16,4 +16,11 @@ urlpatterns = [
     path('course/edit/<int:id>/', views.course_edit, name='edit-course'),
     path('course/delete/<int:id>/', views.course_delete, name='delete-course'),
     path('course/update/', views.course_update, name='update-course'),
+    path('staff/add', views.add_staff, name="add-staff"),
+    path('staff/', views.staff_index, name='list-staff'),
+    path('staff/view/<int:id>/', views.staff_view, name='view-staff'),
+    path('staff/edit/<int:id>/', views.staff_edit, name='edit-staff'),
+    path('staff/delete/<int:id>/', views.staff_delete, name='delete-staff'),
+    path('staff/update/', views.staff_update, name='update-staff'),
+
 ]

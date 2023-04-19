@@ -257,3 +257,124 @@ def course_update(request):
             return redirect('edit-course', id=course.id)
     return redirect('edit-course', id= request.POST.get('id'))
 
+
+# View function to add a new staff
+@login_required(login_url='/login/')
+def add_staff(request):
+    courses = Course.objects.all()
+    # Check if the form was submitted
+    if request.method == "POST":
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        staff_id = request.POST.get('staff_id')
+        gender = request.POST.get('gender')
+        doj = request.POST.get('doj')
+        qualification = request.POST.get('qualification')
+        phone_number = request.POST.get('phone_number')
+        department = request.POST.get('course')
+        usertype = "staff"
+
+        # Check if email or username already exists
+        if User.objects.filter(email=email).exists():
+            messages.warning(request,"Email is already taken !")
+            return redirect('add-staff')
+        if User.objects.filter(username=username).exists():
+            messages.warning(request,"Username is already taken !")
+            return redirect('add-staff')
+        else:
+            # Create a new user with the given details
+            user = User.objects.create_user(username=username, password=password, email=email, first_name=first_name, last_name=last_name)
+            user.save()
+
+            # Create a new user profile
+            profile = UserProfile(user=user, usertype=usertype)
+            profile.save()
+
+            # Get the course object from the provided id
+            course=Course.objects.get(id=department)
+
+            # Create a new staff object with the given details
+            staff = Staff(user=profile, staff_id=staff_id, gender=gender, doj=doj, qualification=qualification, phone_number=phone_number, course=course)
+            staff.save()
+
+            messages.success(request,"Staff successfully added !")
+            return redirect('add-staff')
+
+    context = {
+        'course': courses,
+     }
+    return render(request, 'hod/staff_add.html',context)
+
+# View function to list all the staff
+@login_required(login_url='/login/')
+def staff_index(request):
+    # Query all staff from the database
+    staff = Staff.objects.all()
+    context = {"data": staff}
+    return render(request, 'hod/staff_index.html', context)
+
+# View function to view staff details
+@login_required(login_url='/login/')
+def staff_view(request, id):
+    # Query a staff from the database based on the id parameter passed in the URL
+    staff = Staff.objects.get(id=id)
+    context = {"data": staff}
+    return render(request, 'hod/staff_view.html', context)
+
+# View function to edit staff details
+@login_required(login_url='/login/')
+def staff_edit(request, id):
+    staff = Staff.objects.get(id=id)
+    courses = Course.objects.all()
+    # Format the date of joining of the staff object
+    doj = staff.doj.strftime('%Y-%m-%d')
+    context = {"data": staff, "course": courses, "doj": doj}
+    return render(request, 'hod/staff_edit.html', context)
+
+# View function to delete existing student record
+@login_required(login_url='/login/')
+def staff_delete(request, id):
+    staff = Staff.objects.get(id=id)
+    # Delete the staff object from the database
+    staff.delete()
+    messages.success(request, "Staff record deleted successfully")
+    return redirect("list-staff")
+
+
+# View function to update staff information
+def staff_update(request):
+    # Check if the request method is POST
+    if request.method == "POST":
+        course = Course.objects.get(id=request.POST.get('course'))
+        # Get the user object to be updated
+        staff = Staff.objects.get(id = request.POST.get('id'))
+         # Update staff's details with the new POST data
+        staff.user.user.first_name = request.POST.get('first_name')
+        staff.user.user.last_name = request.POST.get('last_name')
+        staff.user.user.username = request.POST.get('username')
+        staff.user.user.email = request.POST.get('email')
+        staff.staff_id = request.POST.get('staff_id')
+        staff.gender = request.POST.get('gender')
+        staff.doj = request.POST.get('doj')
+        staff.qualification = request.POST.get('qualification')
+        staff.phone_number = request.POST.get('phone_number')
+        staff.course = course
+        password = request.POST.get('password')
+        # Check if a new password was set
+        if password is not None and password.strip() != "":
+            # Set the staff's password to the new password
+            staff.user.user.set_password(password)
+            print(password)
+        
+        # Save the updated staff and user objects
+        staff.user.user.save()
+        staff.save()
+
+        # Redirect the user to the updated staff's edit page with a success message
+        messages.success(request, "Staff Details Updated Successfully")
+        return redirect('edit-staff',id=staff.id)
+    # If the request method is not POST, redirect to the edit page with the given student ID
+    return redirect('edit-staff',id=request.POST.get('id'))
