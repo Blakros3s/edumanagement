@@ -22,5 +22,11 @@ urlpatterns = [
     path('staff/edit/<int:id>/', views.staff_edit, name='edit-staff'),
     path('staff/delete/<int:id>/', views.staff_delete, name='delete-staff'),
     path('staff/update/', views.staff_update, name='update-staff'),
+    path('subject/add', views.add_subject, name="add-subject"),
+    path('subject/', views.subject_index, name="list-subject"),
+    path('subject/edit/<int:id>/', views.subject_edit, name='edit-subject'),
+    path('subject/delete/<int:id>/', views.subject_delete, name='delete-subject'),
+    path('subject/update/', views.subject_update, name='update-subject'),
+
 
 ]

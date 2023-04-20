@@ -378,3 +378,83 @@ def staff_update(request):
         return redirect('edit-staff',id=staff.id)
     # If the request method is not POST, redirect to the edit page with the given student ID
     return redirect('edit-staff',id=request.POST.get('id'))
+
+@login_required(login_url='/login/')
+def add_subject(request):
+    staff = Staff.objects.all()
+    courses = Course.objects.all()
+
+    if request.method == "POST":
+        name = request.POST.get('subject')
+        subject_id = request.POST.get('subject_id')
+        course_id = request.POST.get('course')
+        staff_id = request.POST.get('staff')
+
+        # Check if subject name already exists
+        if Subject.objects.filter(name=name).exists():
+            messages.warning(request, "Subject already exists!")
+            return redirect('add-subject')
+        else:
+            # Retrieve the Course and Staff instances based on the IDs
+            course = Course.objects.get(id=course_id)
+            staff = Staff.objects.get(id=staff_id)
+            # Create a new subject with the given subject name
+            subject = Subject(name=name, subject_id=subject_id, course=course, staff=staff)
+            subject.save()
+            messages.success(request, "Subject successfully added!")
+            return redirect('add-subject')
+
+    context = {"data": staff, "courses": courses}
+    return render(request, 'hod/subject_add.html',context)
+
+
+# View function to list all the subjects
+@login_required(login_url='/login/')
+def subject_index(request):
+    # Query all subjects from the database
+    subject = Subject.objects.all()
+    context = {"data": subject}
+    return render(request, 'hod/subject_index.html', context)
+
+
+# View function to edit subject details
+@login_required(login_url='/login/')
+def subject_edit(request, id):
+    subject = Subject.objects.get(id=id)
+    course = Course.objects.all()
+    staff = Staff.objects.all()
+    context = {"data": subject, "courses": course, "staff": staff}
+    return render(request, 'hod/subject_edit.html', context)
+
+# View function to delete existing subject record
+@login_required(login_url='/login/')
+def subject_delete(request, id):
+    subject = Subject.objects.get(id=id)
+    # Delete the subject object from the database
+    subject.delete()
+    messages.success(request, "Subject record deleted successfully")
+    return redirect("list-subject")
+
+
+# View function to update subject information
+def subject_update(request):
+    # Check if the request method is POST
+    if request.method == "POST":
+        
+        subject = Subject.objects.get(id= request.POST.get('id'))
+
+        subject.name = request.POST.get('subject')
+        subject.subject_id = request.POST.get('subject_id')
+        course_id = request.POST.get('course')
+        staff_id = request.POST.get('staff')
+
+        subject.course = Course.objects.get(id=course_id)
+        subject.staff = Staff.objects.get(id=staff_id)
+        
+        subject.save()
+        messages.success(request, "Subject successfully Updated!")
+        return redirect('edit-subject',id=subject.id)
+    # If the request method is not POST, redirect to the edit page with the given student ID
+    return redirect('edit-subject',id=request.POST.get('id'))
+
+

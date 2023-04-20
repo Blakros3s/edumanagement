@@ -1,0 +1,53 @@
+{% extends "layouts/master.html" %}
+
+{% block title %}Edit Subject{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            {% include "partials/_message.html" %}
+            <div class="card shadow-lg border-0 rounded-lg">
+                <div class="card-header">
+                    <h3 class="text-center font-weight-light my-4"><i class="fas fa-book-open text-success"></i> Edit Subject</h3>
+                </div>
+                <div class="card-body">
+                    <form action="{% url 'update-subject' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="id" value="{{ data.id }}">
+                        <div class="form-floating mb-3">
+                            <input class="form-control" value="{{data.name}}" type="text" name="subject" placeholder=" " required>
+                            <label for="subject">Subject Name</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input class="form-control" value="{{data.subject_id}}" type="text" name="subject_id" placeholder=" " required>
+                            <label for="subject_id">Subject ID</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <select class="form-control" id="course" name="course" required>
+                                <option value="" disabled selected>Select Course</option>
+                                {% for course in courses %}  
+                                <option value="{{ course.id }}" {% if course.id == data.course.id %}selected{% endif %}>{{ course.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <label for="course">Course</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <select class="form-control" id="staff" name="staff" required>
+                                <option value="" disabled selected>Select Staff</option>
+                                {% for teacher in staff %}  
+                                <option value="{{ teacher.id }}" {% if teacher.id == data.staff.id %}selected{% endif %}>{{ teacher.user.user.first_name }} {{ teacher.user.user.last_name }}</option>
+                                {% endfor %}
+                            </select>
+                            <label for="staff">Staff</label>
+                        </div>
+                        <div class="mt-4 mb-0 d-grid">
+                            <button type="submit" class="btn btn-lg btn-success"><i class="fas fa-plus me-2"></i> Edit Subject</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

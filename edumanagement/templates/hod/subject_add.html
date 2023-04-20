@@ -1,0 +1,52 @@
+{% extends "layouts/master.html" %}
+
+{% block title %}Add Subject{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            {% include "partials/_message.html" %}
+            <div class="card shadow-lg border-0 rounded-lg">
+                <div class="card-header">
+                    <h3 class="text-center font-weight-light my-4"><i class="fas fa-book-open text-success"></i> Add Subject</h3>
+                </div>
+                <div class="card-body">
+                    <form action="{% url 'add-subject' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="subject" type="text" name="subject" placeholder=" " required>
+                            <label for="subject">Subject Name</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="subject_id" type="text" name="subject_id" placeholder=" " required>
+                            <label for="subject_id">Subject ID</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <select class="form-control" id="course" name="course" required>
+                                <option value="" disabled selected>Select Course</option>
+                                {% for course in courses %}
+                                    <option value="{{ course.id }}">{{ course.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <label for="course">Course</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <select class="form-control" id="staff" name="staff" required>
+                                <option value="" disabled selected>Select Staff</option>
+                                {% for staff in data %}
+                                    <option value="{{ staff.id }}">{{ staff.user.user.first_name }} {{ staff.user.user.last_name }}</option>
+                                {% endfor %}
+                            </select>
+                            <label for="staff">Staff</label>
+                        </div>
+                        <div class="mt-4 mb-0 d-grid">
+                            <button type="submit" class="btn btn-lg btn-success"><i class="fas fa-plus me-2"></i> Add Subject</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
