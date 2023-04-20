@@ -9,7 +9,15 @@ from .models import *
 # Define view functions that render template for HOD
 @login_required(login_url='/login/')
 def hod_page(request):
-    return render(request, 'hod/dashboard.html')
+    student_count = Student.objects.all().count()
+    staff_count = Staff.objects.all().count()
+    subject_count = Subject.objects.all().count()
+    course_count = Course.objects.all().count()
+    context = {
+        'total_students': student_count, 'total_staffs': staff_count, 'total_subjects': subject_count, 'total_courses': course_count
+     }
+
+    return render(request, 'hod/dashboard.html',context)
 
 
 # View function to display the user's profile page
