@@ -1,0 +1,45 @@
+{% extends "layouts/master.html" %}
+
+{% block title %}
+    Staff Leave Application
+{% endblock title %}
+
+{% block content %}
+<div class="container my-5">
+    {% include "partials/_message.html" %}
+    <div class="d-flex justify-content-between align-items-center">
+        <h1 class="display-5 mb-2"><i class="fas fa-list"></i> Staffs Leave Application</h1>
+    </div>
+    <table class="table mt-4">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">Name</th>
+                <th scope="col">Date</th>
+                <th scope="col">Application</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for leave in data %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ leave.staff.user.user.first_name }} {{ leave.staff.user.user.last_name }}</td>
+                <td>{{ leave.data }}</td>
+                <td>{{ leave.message }}</td>
+                <td>
+                    {% if leave.status == 0 %}
+                    <a href="{% url 'approved-staff' leave.id %}" class="btn btn-success">Approve</a>
+                    <a href="{% url 'disapproved-staff' leave.id%}" class="btn btn-danger">Disapprove</a>
+                    {% elif leave.status == 1 %}
+                    <button class="btn btn-success" disabled>Approved</button>
+                    {% else %}
+                    <button class="btn btn-danger" disabled>Dispproved</button>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

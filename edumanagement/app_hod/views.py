@@ -4,6 +4,8 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .models import *
+from app_staff.models import *
+from app_student.models import *
 # Create your views here.
 
 # Define view functions that render template for HOD
@@ -512,3 +514,43 @@ def save_studentnotification(request):
         messages.success(request,'Notification sent successfully !')
         return redirect('send-studentnotification')
     return redirect('send-studentnotification')
+
+@login_required(login_url='/login/')
+def staff_leave(request):
+    leave = StaffLeave.objects.all()
+    context = { 'data': leave }
+    return render(request,'hod/staff_leave.html',context)
+
+
+def staff_approved(request,id):
+    leave = StaffLeave.objects.get(id=id)
+    leave.status = 1
+    leave.save()
+    return redirect('leave-staff')
+
+def staff_disapproved(request,id):
+    leave = StaffLeave.objects.get(id=id)
+    leave.status = 2
+    leave.save()
+    return redirect('leave-staff')
+
+
+
+@login_required(login_url='/login/')
+def student_leave(request):
+    leave = StudentLeave.objects.all()
+    context = { 'data': leave }
+    return render(request,'hod/student_leave.html',context)
+
+
+def student_approved(request,id):
+    leave = StudentLeave.objects.get(id=id)
+    leave.status = 1
+    leave.save()
+    return redirect('leave-student')
+
+def student_disapproved(request,id):
+    leave = StudentLeave.objects.get(id=id)
+    leave.status = 2
+    leave.save()
+    return redirect('leave-student')

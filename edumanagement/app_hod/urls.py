@@ -31,5 +31,10 @@ urlpatterns = [
     path('staff/save_notification', views.save_staffnotification, name='save-staffnotification'),
     path('student/send_notification', views.send_studentnotification, name='send-studentnotification'),
     path('student/save_notification', views.save_studentnotification, name='save-studentnotification'),
-
+    path('staff/leave/', views.staff_leave, name='leave-staff'),
+    path('staff/leave/approved/<str:id>', views.staff_approved, name='approved-staff'),
+    path('staff/leave/disapproved/<str:id>', views.staff_disapproved, name='disapproved-staff'),
+    path('student/leave/', views.student_leave, name='leave-student'),
+    path('student/leave/approved/<str:id>', views.student_approved, name='approved-student'),
+    path('student/leave/disapproved/<str:id>', views.student_disapproved, name='disapproved-student'),
 ]

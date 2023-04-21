@@ -4,6 +4,7 @@ from django.contrib.auth import update_session_auth_hash
 from authentication.models import User
 from django.contrib import messages
 from app_hod.models import *
+from . models import *
 # Create your views here.
 
 # Define view functions that render template for Staff
@@ -61,4 +62,21 @@ def staff_notification(request):
             'notification': notification
         }
         return render(request, 'staff/notification.html', context)
+
+
+def staff_applyleave(request):
+    leave = StaffLeave.objects.filter(staff__user__user=request.user.id)
+    context = {
+        'data': leave
+    }
+    if request.method == "POST":
+        date= request.POST.get('date')
+        message = request.POST.get('message')
+        staff = Staff.objects.get(user__user=request.user.id)
+
+        leave= StaffLeave(staff=staff, data=date, message=message)
+        leave.save()
+        messages.success(request, "Applied for Leave Successfully")
+        return redirect('staff-applyleave')
+    return render(request, 'staff/leave.html',context)
 

@@ -6,4 +6,5 @@ urlpatterns = [
     path('profile/', views.profile_page, name="studentprofile"),
     path('profile/update/', views.profile_update, name="studentprofile-update"),
     path('notification/', views.student_notification, name="student-notification"),
+    path('leave/', views.student_applyleave, name="student-applyleave"),
 ]

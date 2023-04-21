@@ -4,6 +4,7 @@ from django.contrib.auth import update_session_auth_hash
 from authentication.models import User
 from django.contrib import messages
 from app_hod.models import *
+from .models import *
 # Create your views here.
 
 # Define view functions that render template for Student
@@ -60,3 +61,21 @@ def student_notification(request):
             'notification': notification
         }
         return render(request, 'student/notification.html', context)
+
+
+
+def student_applyleave(request):
+    leave = StudentLeave.objects.filter(student__user__user=request.user.id)
+    context = {
+        'data': leave
+    }
+    if request.method == "POST":
+        date= request.POST.get('date')
+        message = request.POST.get('message')
+        student = Student.objects.get(user__user=request.user.id)
+
+        leave= StudentLeave(student=student, data=date, message=message)
+        leave.save()
+        messages.success(request, "Applied for Leave Successfully")
+        return redirect('student-applyleave')
+    return render(request, 'student/leave.html',context)
