@@ -59,3 +59,21 @@ class Subject(models.Model):
 
     def __str__(self):
         return self.name
+    
+
+class StaffNotification(models.Model):
+    staff = models.ForeignKey(Staff, on_delete=models.CASCADE)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.staff.user.user.first_name} {self.staff.user.user.last_name}"
+    
+
+class StudentNotification(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.student.user.user.first_name} {self.student.user.user.last_name}"

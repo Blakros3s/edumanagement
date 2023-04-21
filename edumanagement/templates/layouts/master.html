@@ -19,10 +19,10 @@
 </head>
 
 <body class="bg-light">
-
+  {% if user.userprofile.usertype == 'hod' %}
   <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-success" aria-label="Main navigation">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#" style="text-transform:uppercase;">{{ user.userprofile.usertype }} Dashboard</a>
+      <a class="navbar-brand" href="{% url 'hodpage' %}" style="text-transform:uppercase;">{{ user.userprofile.usertype }} Dashboard</a>
       <button class="navbar-toggler p-0 border-0" type="button" id="navbarSideCollapse" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -30,8 +30,12 @@
       <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           
-          <li class="nav-item">
-            <a class="nav-link" href="#">Notifications</a>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdown00" data-bs-toggle="dropdown" aria-expanded="false">Notification</a>
+            <ul class="dropdown-menu" aria-labelledby="dropdown00">
+              <li><a class="dropdown-item" href="{% url 'send-studentnotification' %}">Student Notification</a></li>
+              <li><a class="dropdown-item" href="{% url 'send-staffnotification' %}">Staff Notification</a></li>
+            </ul>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Course</a>
@@ -72,7 +76,71 @@
       </div>
     </div>
   </nav>
+  {% elif user.userprofile.usertype == 'staff' %}
+  <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-success" aria-label="Main navigation">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'staffpage' %}" style="text-transform:uppercase;">{{ user.userprofile.usertype }} Dashboard</a>
+      <button class="navbar-toggler p-0 border-0" type="button" id="navbarSideCollapse" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
+      <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'staff-notification' %}">Notifications</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">Staff</a>
+            <ul class="dropdown-menu" aria-labelledby="dropdown03">
+              <li><a class="dropdown-item" href="{% url 'add-staff' %}">Add Staff</a></li>
+              <li><a class="dropdown-item" href="{% url 'list-staff' %}">View Staff</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'logout' %}">Logout</a>
+          </li>
+        </ul>
+        <form class="d-flex">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-light" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+  {% elif user.userprofile.usertype == 'student' %}
+  <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-success" aria-label="Main navigation">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'studentpage' %}" style="text-transform:uppercase;">{{ user.userprofile.usertype }} Dashboard</a>
+      <button class="navbar-toggler p-0 border-0" type="button" id="navbarSideCollapse" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'student-notification' %}">Notifications</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdown02" data-bs-toggle="dropdown" aria-expanded="false">Student</a>
+            <ul class="dropdown-menu" aria-labelledby="dropdown02">
+              <li><a class="dropdown-item" href="{% url 'add-student' %}">Add Student</a></li>
+              <li><a class="dropdown-item" href="{% url 'list-student' %}">View Student</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'logout' %}">Logout</a>
+          </li>
+        </ul>
+        <form class="d-flex">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-light" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+  {% endif %}
   <div class="nav-scroller bg-body shadow-sm">
     <nav class="nav nav-underline" aria-label="Secondary navigation">
       <p class="nav-link active" aria-current="page">Welcome ! {{ user.first_name }} {{ user.last_name }}</p>

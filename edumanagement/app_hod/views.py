@@ -466,3 +466,49 @@ def subject_update(request):
     return redirect('edit-subject',id=request.POST.get('id'))
 
 
+# View function to send notifications to staff
+@login_required(login_url='/login/')
+def send_staffnotification(request):
+    staff = Staff.objects.all()
+    context = { 'data': staff }
+    return render(request,'hod/staff_notification.html',context)
+
+
+# View function to save the staff notification to the database
+def save_staffnotification(request):
+    if request.method == "POST":
+        # Get the staff member and message from the request.POST data
+        staff = request.POST.get('staff')
+        message = request.POST.get('message')
+        # Get the staff object from the Staff model using the user field
+        staff = Staff.objects.get(user = staff)
+        # Create a new StaffNotification object and save it to the database
+        notification = StaffNotification( staff=staff, message=message)
+        notification.save()
+        messages.success(request,'Notification sent successfully !')
+        return redirect('send-staffnotification')
+    return redirect('send-staffnotification')
+
+
+# View function to send notifications to students
+@login_required(login_url='/login/')
+def send_studentnotification(request):
+    student = Student.objects.all()
+    context = { 'data': student }
+    return render(request,'hod/student_notification.html',context)
+
+
+# View function to save the student notification to the database
+def save_studentnotification(request):
+    if request.method == "POST":
+        # Get the student and message from the request.POST data
+        student = request.POST.get('student')
+        message = request.POST.get('message')
+        # Get the student object from the Student model using the user field
+        studentid = Student.objects.get(user = student)
+        # Create a new StudentNotification object and save it to the database
+        notification = StudentNotification(student=studentid, message=message)
+        notification.save()
+        messages.success(request,'Notification sent successfully !')
+        return redirect('send-studentnotification')
+    return redirect('send-studentnotification')

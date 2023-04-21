@@ -1,4 +1,8 @@
 {% extends 'layouts/master.html' %}
+{% block title %}
+    Notification
+{% endblock title %}
+
 {% block content %}
 <div class="container my-5">
     {% include "partials/_message.html" %}
@@ -21,18 +25,14 @@
                 <td>{{ data.message|truncatechars:30 }}</td>
                 <td>{{ data.created_at }}</td>
                 <td>
-                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#notificationModal{{ data.id }}">
+                    <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#notificationModal{{ data.id }}">
                         View
                     </button>
 
                     <!-- Modal -->
-                    <div class="modal fade" id="notificationModal{{ data.id }}" tabindex="-1" aria-labelledby="notificationModalLabel{{ notification.id }}" aria-hidden="true">
+                    <div class="modal fade" id="notificationModal{{ data.id }}" tabindex="-1" aria-labelledby="notificationModalLabel{{ data.id }}" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="notificationModalLabel{{ notification.id }}">{{ notification.subject }}</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
                                 <div class="modal-body">
                                     <p>{{ data.message }}</p>
                                 </div>

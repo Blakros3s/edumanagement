@@ -27,6 +27,9 @@ urlpatterns = [
     path('subject/edit/<int:id>/', views.subject_edit, name='edit-subject'),
     path('subject/delete/<int:id>/', views.subject_delete, name='delete-subject'),
     path('subject/update/', views.subject_update, name='update-subject'),
-
+    path('staff/send_notification', views.send_staffnotification, name='send-staffnotification'),
+    path('staff/save_notification', views.save_staffnotification, name='save-staffnotification'),
+    path('student/send_notification', views.send_studentnotification, name='send-studentnotification'),
+    path('student/save_notification', views.save_studentnotification, name='save-studentnotification'),
 
 ]

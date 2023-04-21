@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash
 from authentication.models import User
 from django.contrib import messages
+from app_hod.models import *
 # Create your views here.
 
 # Define view functions that render template for Student
@@ -45,3 +46,17 @@ def profile_update(request):
         return redirect('studentprofile')
     # If the request method is not POST, redirect to the profile page
     return redirect('studentprofile')
+
+
+@login_required(login_url='/login/')
+def student_notification(request):
+    # Filtering out the Student instance of the logged in user
+    user = Student.objects.filter(user__user= request.user.id)
+    # Retrieving notifications for the student, ordered by created_at in descending order
+    for i in user:
+        student_id = i.id
+        notification = StudentNotification.objects.filter(student=student_id).order_by('-created_at')
+        context = {
+            'notification': notification
+        }
+        return render(request, 'student/notification.html', context)

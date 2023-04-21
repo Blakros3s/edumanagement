@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash
 from authentication.models import User
 from django.contrib import messages
+from app_hod.models import *
 # Create your views here.
 
 # Define view functions that render template for Staff
@@ -45,3 +46,19 @@ def profile_update(request):
         return redirect('staffprofile')
     # If the request method is not POST, redirect to the profile page
     return redirect('staffprofile')
+
+
+# View function to show notifications for staff users
+@login_required(login_url='/login/')
+def staff_notification(request):
+    # Query the staff user who is currently logged in
+    user = Staff.objects.filter(user__user= request.user.id)
+    # Loop through the staff users and get their notification history
+    for i in user:
+        staff_id = i.id
+        notification = StaffNotification.objects.filter(staff=staff_id).order_by('-created_at')
+        context = {
+            'notification': notification
+        }
+        return render(request, 'staff/notification.html', context)
+
