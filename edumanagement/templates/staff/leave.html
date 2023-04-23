@@ -13,7 +13,7 @@
             <div class="card shadow-lg">
                 <div class="card-body">
                     <h1 class="display-5 mb-4"><i class="fas fa-calendar-alt"></i> Apply Leave</h1>
-                    <form method="POST">
+                    <form method="POST" action="{% url 'staff-applyleave' %}">
                         {% csrf_token %}
                         <div class="form-group mb-4">
                             <label for="date">Leave Date:</label>

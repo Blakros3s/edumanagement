@@ -554,3 +554,25 @@ def student_disapproved(request,id):
     leave.status = 2
     leave.save()
     return redirect('leave-student')
+
+
+# hod views attendance for a selected subject and date
+def view_attendance(request):
+    subject = Subject.objects.all()
+    action = request.GET.get('action')
+    get_report = None
+    get_subject = None
+    date = None
+    if action is not None:
+        sub_id = request.POST.get('subject')
+        date = request.POST.get('date')
+        get_subject = Subject.objects.get(id = sub_id)
+
+        attendance= Attendance.objects.filter(subject=get_subject, attendance_data=date)
+        for i in attendance:
+            attendance_id = i.id
+            get_report = AttendanceReport.objects.filter(attendance_id=attendance_id)
+    context = {
+        'subject':subject, 'get_subject':get_subject, 'get_date':date, 'attendance_report':get_report, 'action':action
+    }
+    return render(request, 'hod/view_attendance.html',context)

@@ -4,6 +4,7 @@ from django.contrib.auth import update_session_auth_hash
 from authentication.models import User
 from django.contrib import messages
 from app_hod.models import *
+from app_staff.models import *
 from .models import *
 # Create your views here.
 
@@ -79,3 +80,22 @@ def student_applyleave(request):
         messages.success(request, "Applied for Leave Successfully")
         return redirect('student-applyleave')
     return render(request, 'student/leave.html',context)
+
+
+# student views attendance for a selected subject
+def view_attendance(request):
+    student = Student.objects.get(user__user = request.user.id)
+    subject = Subject.objects.filter(course=student.course_id)
+    action = request.GET.get('action')
+    get_report = None
+    get_subject = None
+    if action is not None:
+        if request.method == "POST":
+            sub_id = request.POST.get('subject')
+            get_subject = Subject.objects.get(id = sub_id)
+
+            get_report = AttendanceReport.objects.filter(student=student, attendance__subject=sub_id)
+    context = {
+        'subject':subject, 'get_subject':get_subject, 'attendance_report':get_report, 'action':action
+    }
+    return render(request, 'student/view_attendance.html',context)

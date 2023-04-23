@@ -32,8 +32,8 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="dropdown06" data-bs-toggle="dropdown" aria-expanded="false">Leave</a>
             <ul class="dropdown-menu" aria-labelledby="dropdown06">
-              <li><a class="dropdown-item" href="{% url 'add-course' %}">Student Leave</a></li>
-              <li><a class="dropdown-item" href="{% url 'list-course' %}">Staff Leave</a></li>
+              <li><a class="dropdown-item" href="{% url 'leave-student' %}">Student Leave</a></li>
+              <li><a class="dropdown-item" href="{% url 'leave-staff' %}">Staff Leave</a></li>
             </ul>
           </li>
           <li class="nav-item dropdown">
@@ -72,6 +72,9 @@
             </ul>
           </li>
           <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'hod-attendance' %}">Attendance</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{% url 'logout' %}">Logout</a>
           </li>
         </ul>
@@ -96,11 +99,14 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'staff-notification' %}">Notifications</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'staff-applyleave' %}">Apply Leave</a>
+          </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">Staff</a>
+            <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">Attendance</a>
             <ul class="dropdown-menu" aria-labelledby="dropdown03">
-              <li><a class="dropdown-item" href="{% url 'add-staff' %}">Add Staff</a></li>
-              <li><a class="dropdown-item" href="{% url 'list-staff' %}">View Staff</a></li>
+              <li><a class="dropdown-item" href="{% url 'take-attendance' %}">Take Attendance</a></li>
+              <li><a class="dropdown-item" href="{% url 'view-attendance' %}">View Attendance</a></li>
             </ul>
           </li>
           <li class="nav-item">
@@ -128,12 +134,11 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'student-notification' %}">Notifications</a>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="dropdown02" data-bs-toggle="dropdown" aria-expanded="false">Student</a>
-            <ul class="dropdown-menu" aria-labelledby="dropdown02">
-              <li><a class="dropdown-item" href="{% url 'add-student' %}">Add Student</a></li>
-              <li><a class="dropdown-item" href="{% url 'list-student' %}">View Student</a></li>
-            </ul>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'student-attendance' %}">Attendance</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'student-applyleave' %}">Apply Leave</a>
           </li>
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{% url 'logout' %}">Logout</a>

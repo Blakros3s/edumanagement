@@ -7,4 +7,7 @@ urlpatterns = [
     path('profile/update/', views.profile_update, name="staffprofile-update"),
     path('notification/', views.staff_notification, name="staff-notification"),
     path('leave/', views.staff_applyleave, name="staff-applyleave"),
+    path('attendance/take', views.take_attendance, name="take-attendance"),
+    path('attendance/save', views.save_attendance, name="save-attendance"),
+    path('attendance/view', views.view_attendance, name="view-attendance"),
 ]

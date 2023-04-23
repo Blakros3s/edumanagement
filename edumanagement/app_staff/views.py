@@ -63,8 +63,9 @@ def staff_notification(request):
         }
         return render(request, 'staff/notification.html', context)
 
-
+# staff applies for leave and the leave data is saved
 def staff_applyleave(request):
+    # get all leave instances for the current user
     leave = StaffLeave.objects.filter(staff__user__user=request.user.id)
     context = {
         'data': leave
@@ -80,3 +81,77 @@ def staff_applyleave(request):
         return redirect('staff-applyleave')
     return render(request, 'staff/leave.html',context)
 
+
+# staff takes attendance for a selected subject and date
+def take_attendance(request):
+    # get the current user's staff instance
+    staff = Staff.objects.get(user__user = request.user.id)
+    # get all subjects associated with the staff instance
+    subject = Subject.objects.filter(staff=staff)
+    action = request.GET.get('action')
+    get_student = None
+    get_subject = None
+    date = None
+    if action is not None:
+        # get the selected subject and date from the POST request
+        sub_id = request.POST.get('subject')
+        date = request.POST.get('date')
+        get_subject = Subject.objects.get(id = sub_id)
+
+        sub = Subject.objects.filter(id=sub_id)
+        # initialize a variable to store all students associated with the selected subject
+        for i in sub:
+            student_id = i.course.id
+            get_student = Student.objects.filter(course_id=student_id)
+    context = {
+        'staff':staff, 'subject':subject, 'get_subject':get_subject, 'get_date':date, 'students':get_student, 'action':action
+    }
+    return render(request, 'staff/take_attendance.html',context)
+
+
+def save_attendance(request):
+    # Get the subject id and date of attendance from POST request
+    sub_id = request.POST.get('sub')
+    date = request.POST.get('date')
+    # Get the subject object using the subject id
+    get_subject = Subject.objects.get(id = sub_id)
+    # Get a list of student ids from POST request
+    student_id= request.POST.getlist('attendance')
+    # Create a new attendance instance with the subject and attendance date
+    attendance = Attendance(subject=get_subject, attendance_data=date)
+    attendance.save()
+
+    # Loop through the list of student ids
+    for i in student_id:
+        std_id = int(i)
+
+        present_students = Student.objects.get(id=std_id)
+        # Create a new attendance report instance for the student and attendance
+        attendance_report = AttendanceReport(student=present_students,attendance=attendance)
+        attendance_report.save()
+    
+    messages.success(request, "Attendance Saved Successfully")
+    return redirect('take-attendance')
+
+
+# staff views attendance for a selected subject and date
+def view_attendance(request):
+    staff = Staff.objects.get(user__user = request.user.id)
+    subject = Subject.objects.filter(staff=staff)
+    action = request.GET.get('action')
+    get_report = None
+    get_subject = None
+    date = None
+    if action is not None:
+        sub_id = request.POST.get('subject')
+        date = request.POST.get('date')
+        get_subject = Subject.objects.get(id = sub_id)
+
+        attendance= Attendance.objects.filter(subject=get_subject, attendance_data=date)
+        for i in attendance:
+            attendance_id = i.id
+            get_report = AttendanceReport.objects.filter(attendance_id=attendance_id)
+    context = {
+        'staff':staff, 'subject':subject, 'get_subject':get_subject, 'get_date':date, 'attendance_report':get_report, 'action':action
+    }
+    return render(request, 'staff/view_attendance.html',context)

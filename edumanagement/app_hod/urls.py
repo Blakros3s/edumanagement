@@ -37,4 +37,6 @@ urlpatterns = [
     path('student/leave/', views.student_leave, name='leave-student'),
     path('student/leave/approved/<str:id>', views.student_approved, name='approved-student'),
     path('student/leave/disapproved/<str:id>', views.student_disapproved, name='disapproved-student'),
+    
+    path('attendance/view', views.view_attendance, name="hod-attendance"),
 ]
