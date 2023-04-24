@@ -8,4 +8,5 @@ urlpatterns = [
     path('notification/', views.student_notification, name="student-notification"),
     path('leave/', views.student_applyleave, name="student-applyleave"),
     path('attendance/view', views.view_attendance, name="student-attendance"),
+    path('result/view',views.view_result,name="student-result")
 ]

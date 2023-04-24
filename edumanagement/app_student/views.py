@@ -99,3 +99,17 @@ def view_attendance(request):
         'subject':subject, 'get_subject':get_subject, 'attendance_report':get_report, 'action':action
     }
     return render(request, 'student/view_attendance.html',context)
+
+
+
+def view_result(request):
+    student = Student.objects.get(user__user = request.user.id)
+    result = StudentResult.objects.filter(student=student)
+    
+    for marks in result:
+        marks.passed = marks.assignment_marks >= 12 and marks.exam_marks >= 28
+    
+    context = {
+        'results': result
+    }
+    return render(request, 'student/view_result.html', context)

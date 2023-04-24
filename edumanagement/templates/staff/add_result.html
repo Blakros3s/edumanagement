@@ -1,0 +1,104 @@
+{% extends "layouts/master.html" %}
+
+{% block title %}
+    Add Results
+{% endblock title %}
+
+{% block content %}
+<div class="container my-5">
+    {% include "partials/_message.html" %}
+
+    <h1 class="display-5 mb-2"><i class="fas fa-check-square"></i> Add Results</h1>
+  {% if action is None %}
+    <form method="POST" action="?action=get_student">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <select class="form-select" id="subject" name="subject">
+                        <option value="" selected disabled>Select a subject</option>
+                        {% for data in subject %}
+                            <option value="{{ data.id }}">{{ data.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="date">Exam Date</label>
+                    <input type="date" class="form-control" id="date" name="date">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="fetch-students">&nbsp;</label>
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-users"></i> Fetch Students
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+    {% else %}
+    
+    <form method="POST" action="{% url 'save-result' %}">
+      {% csrf_token %}
+      <div class="card">
+        <div class="card-header bg-success text-white">
+          <h5 class="mb-0">
+            <i class="fas fa-edit"></i> Add Results
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="form-group row">
+            <label for="subject" class="col-sm-2 col-form-label font-weight-bold">Subject:</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control-plaintext" id="subject" name="subject" value="{{ get_subject }}" readonly>
+              <input type="hidden" name="sub" value="{{ get_subject.id }}">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="date" class="col-sm-2 col-form-label font-weight-bold">Exam Date:</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control-plaintext" id="date" name="date" value="{{ get_date }}" readonly>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="student" class="font-weight-bold">Student List:</label>
+            <select class="form-select" id="student" name="student">
+              <option value="" selected disabled>Select a student</option>
+              {% for data in students %}
+              <option value="{{ data.id }}">{{ data.user.user.first_name }} {{ data.user.user.last_name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="assignment" class="font-weight-bold">Assignment Marks:</label>
+                <input type="number" class="form-control" id="assignment" name="assignment">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="exam" class="font-weight-bold">Exam Marks:</label>
+                <input type="number" class="form-control" id="exam" name="exam">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <input type="hidden" name="subject_id" value="{{ selected_subject.id }}">
+          <button type="submit" class="btn btn-success">
+            <i class="fas fa-save"></i> Save Results
+          </button>
+        </div>
+      </div>
+    </form>
+    
+    {% endif %}
+</div>
+{% endblock %}

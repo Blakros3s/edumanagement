@@ -576,3 +576,45 @@ def view_attendance(request):
         'subject':subject, 'get_subject':get_subject, 'get_date':date, 'attendance_report':get_report, 'action':action
     }
     return render(request, 'hod/view_attendance.html',context)
+
+
+
+def view_result(request):
+    subject = Subject.objects.all()
+    get_subject = None
+    get_student = None
+    action = request.GET.get('action')
+    if action is not None:
+        sub_id = request.POST.get('subject')
+        get_subject = Subject.objects.get(id = sub_id)
+        print(get_subject)
+        sub = Subject.objects.filter(id=sub_id)
+        for i in sub:
+            student_id = i.course.id
+            get_student = Student.objects.filter(course_id=student_id)
+
+    context = {
+        'subject': subject, 'student':get_student, 'get_subject':get_subject, 'action':action
+    }
+    
+    return render(request, 'hod/view_result.html', context)
+
+
+
+@login_required(login_url='/login/')
+def view_studentresult(request):
+    result=None
+    student=None
+    if request.method=="POST":
+        std_id = request.POST.get('student')
+        student = Student.objects.get(id=std_id)
+        result = StudentResult.objects.filter(student=student)
+
+    for marks in result:
+        marks.passed = marks.assignment_marks >= 12 and marks.exam_marks >= 28
+
+       
+    context = {
+        'results': result,'student':student
+    }
+    return render(request, 'staff/view_studentresult.html', context)

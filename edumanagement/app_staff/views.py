@@ -155,3 +155,100 @@ def view_attendance(request):
         'staff':staff, 'subject':subject, 'get_subject':get_subject, 'get_date':date, 'attendance_report':get_report, 'action':action
     }
     return render(request, 'staff/view_attendance.html',context)
+
+
+
+# staff adds result for a selected subject and student
+def add_result(request):
+    # get the current user's staff instance
+    staff = Staff.objects.get(user__user = request.user.id)
+    # get all subjects associated with the staff instance
+    subject = Subject.objects.filter(staff=staff)
+    action = request.GET.get('action')
+    get_student = None
+    get_subject = None
+    date = None
+    if action is not None:
+        # get the selected subject and date from the POST request
+        sub_id = request.POST.get('subject')
+        date = request.POST.get('date')
+        get_subject = Subject.objects.get(id = sub_id)
+
+        sub = Subject.objects.filter(id=sub_id)
+        # initialize a variable to store all students associated with the selected subject
+        for i in sub:
+            student_id = i.course.id
+            get_student = Student.objects.filter(course_id=student_id)
+    context = {
+        'staff':staff, 'subject':subject, 'get_subject':get_subject, 'get_date':date, 'students':get_student, 'action':action
+    }
+    return render(request, 'staff/add_result.html',context)
+
+
+
+def save_result(request):
+    # Get the subject id and date of attendance from POST request
+    sub_id = request.POST.get('sub')
+    date = request.POST.get('date')
+    assignment_marks = request.POST.get('assignment')
+    exam_marks = request.POST.get('exam')
+    std = request.POST.get('student')
+    # Get the subject object using the subject id
+    get_subject = Subject.objects.get(id = sub_id)
+    get_student = Student.objects.get(id = std)
+    check_exists = StudentResult.objects.filter(subject=get_subject,student=get_student, exam_date=date).exists()
+    if check_exists:
+        result= StudentResult.objects.get(subject=get_subject,student=get_student)
+        result.assignment_marks = assignment_marks
+        result.exam_marks = exam_marks
+        result.exam_date = date
+        result.save()
+        messages.success(request, "Results are Successfully Updated !")
+        return redirect('add-result')
+    else:
+        result = StudentResult(subject=get_subject,student=get_student, assignment_marks = assignment_marks, exam_marks = exam_marks, exam_date = date )
+        result.save()
+        messages.success(request, "Results are Successfully Added !")
+        return redirect('add-result')
+    
+
+
+def view_result(request):
+    subject = Subject.objects.all()
+    get_subject = None
+    get_student = None
+    action = request.GET.get('action')
+    if action is not None:
+        sub_id = request.POST.get('subject')
+        get_subject = Subject.objects.get(id = sub_id)
+        print(get_subject)
+        sub = Subject.objects.filter(id=sub_id)
+        for i in sub:
+            student_id = i.course.id
+            get_student = Student.objects.filter(course_id=student_id)
+
+    context = {
+        'subject': subject, 'student':get_student, 'get_subject':get_subject, 'action':action
+    }
+    
+    return render(request, 'staff/view_result.html', context)
+
+
+
+@login_required(login_url='/login/')
+def view_studentresult(request):
+    result=None
+    student=None
+    if request.method=="POST":
+        std_id = request.POST.get('student')
+        student = Student.objects.get(id=std_id)
+        result = StudentResult.objects.filter(student=student)
+
+    for marks in result:
+        marks.passed = marks.assignment_marks >= 12 and marks.exam_marks >= 28
+
+       
+    context = {
+        'results': result,'student':student
+    }
+    return render(request, 'staff/view_studentresult.html', context)

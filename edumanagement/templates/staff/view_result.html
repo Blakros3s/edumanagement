@@ -1,0 +1,70 @@
+{% extends "layouts/master.html" %}
+
+{% block title %}
+    View Results
+{% endblock title %}
+
+{% block content %}
+<div class="container my-5">
+    {% include "partials/_message.html" %}
+
+    <h1 class="display-5 mb-2"><i class="fas fa-check-square"></i> View Results</h1>
+  {% if action is None %}
+    <form method="POST" action="?action=get_student">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <select class="form-select" id="subject" name="subject">
+                        <option value="" selected disabled>Select a subject</option>
+                        {% for data in subject %}
+                            <option value="{{ data.id }}">{{ data.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="fetch-students">&nbsp;</label>
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-users"></i> Fetch Students
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+    {% else %}
+    
+    <form method="POST" action="{% url 'staff-studentresult' %}">
+        {% csrf_token %}
+        <div class="row mb-3">
+          <label for="getsubject" class="col-sm-2 col-form-label">Subject:</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" id="getsubject" name="getsubject" value="{{ get_subject }}" readonly>
+            <input type="hidden" name="sub" value="{{ get_subject.id }}">
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label for="student" class="col-sm-2 col-form-label">Student:</label>
+          <div class="col-sm-10">
+            <select class="form-select" id="student" name="student">
+              <option value="" selected disabled>Select a student</option>
+              {% for data in student %}
+                <option value="{{ data.id }}">{{ data.user.user.first_name }} {{ data.user.user.last_name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="card-footer">
+          <input type="hidden" name="subject_id" value="{{ selected_subject.id }}">
+          <button type="submit" class="btn btn-success">
+            <i class="fas fa-save me-2"></i> View Student Result
+          </button>
+        </div>
+      </form>
+    {% endif %}
+</div>
+{% endblock %}

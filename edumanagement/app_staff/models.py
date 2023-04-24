@@ -31,3 +31,16 @@ class AttendanceReport(models.Model):
 
     def __str__(self):
         return f"{self.student.user.user.first_name} {self.student.user.user.last_name}"
+
+
+class StudentResult(models.Model):
+    student = models.ForeignKey(Student,on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject,on_delete=models.CASCADE)
+    exam_date = models.DateField()
+    assignment_marks = models.IntegerField()
+    exam_marks = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.student.user.user.first_name} {self.student.user.user.last_name}"

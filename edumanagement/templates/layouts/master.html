@@ -75,6 +75,9 @@
             <a class="nav-link active" aria-current="page" href="{% url 'hod-attendance' %}">Attendance</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="{% url 'hod-result' %}">Results</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{% url 'logout' %}">Logout</a>
           </li>
         </ul>
@@ -109,6 +112,13 @@
               <li><a class="dropdown-item" href="{% url 'view-attendance' %}">View Attendance</a></li>
             </ul>
           </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-bs-toggle="dropdown" aria-expanded="false">Results</a>
+            <ul class="dropdown-menu" aria-labelledby="dropdown04">
+              <li><a class="dropdown-item" href="{% url 'add-result' %}">Add Student Results</a></li>
+              <li><a class="dropdown-item" href="{% url 'staff-result' %}">View Student Results</a></li>
+            </ul>
+          </li>
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{% url 'logout' %}">Logout</a>
           </li>
@@ -133,6 +143,9 @@
           
           <li class="nav-item">
             <a class="nav-link" href="{% url 'student-notification' %}">Notifications</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'student-result' %}">Results</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'student-attendance' %}">Attendance</a>

@@ -4,3 +4,4 @@ from .models import *
 admin.site.register(StaffLeave)
 admin.site.register(Attendance)
 admin.site.register(AttendanceReport)
+admin.site.register(StudentResult)
