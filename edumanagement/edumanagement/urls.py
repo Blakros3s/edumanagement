@@ -24,9 +24,8 @@ urlpatterns = [
     path('hod/', include('app_hod.urls')),
     path('staff/', include('app_staff.urls')),
     path('student/', include('app_student.urls')),
-    path('master/', views.master_layout, name='master'),
+    path('', views.home_page, name='home'),
     path('', include('authentication.urls')),
-    path('api-auth/', include('authentication.urls')),
     path('api/v1/', include('restapi.urls')),
 ]
 if settings.DEBUG:

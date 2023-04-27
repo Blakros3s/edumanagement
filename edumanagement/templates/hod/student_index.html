@@ -11,7 +11,10 @@
         <h1 class="display-5 mb-2"><i class="fas fa-list"></i> Students</h1>
         <a href="{% url 'add-student' %}" class="btn btn-primary"><i class="fas fa-plus"></i> Add Student</a>
     </div>
-    <table class="table mt-4">
+    
+        <input class="form-control me-2" id="searchInput" type="search" placeholder="Search" aria-label="Search">
+    
+    <table class="table mt-4" id="dataTable">
         <thead class="table-dark">
             <tr>
                 <th scope="col"></th>
@@ -38,4 +41,7 @@
         </tbody>
     </table>
 </div>
+
+
+
 {% endblock %}
