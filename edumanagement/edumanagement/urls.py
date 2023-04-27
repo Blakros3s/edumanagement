@@ -26,6 +26,8 @@ urlpatterns = [
     path('student/', include('app_student.urls')),
     path('master/', views.master_layout, name='master'),
     path('', include('authentication.urls')),
+    path('api-auth/', include('authentication.urls')),
+    path('api/v1/', include('restapi.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

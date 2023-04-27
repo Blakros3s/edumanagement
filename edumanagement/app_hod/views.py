@@ -180,29 +180,7 @@ def student_update(request):
     # If the request method is not POST, redirect to the edit page with the given student ID
     return redirect('edit-student',id=request.POST.get('id'))
 
-# View function to update user profile details
-def profile_update(request):
-    # Check if the request method is POST
-    if request.method == "POST":
-        # Get the user object to be updated
-        user = User.objects.get(id = request.POST.get('id'))
-        # Update the user's first name, last name, and email fields from the form data
-        user.first_name = request.POST.get('first_name')
-        user.last_name = request.POST.get('last_name')
-        user.email = request.POST.get('email')
-        password = request.POST.get('password')
-        # Check if a new password was set
-        if password is not None and password.strip() != "":
-            # Set the user's password to the new password and update the user's session authentication hash
-            user.set_password(password)
-            update_session_auth_hash(request, user)
-        # Save the updated user object
-        user.save()
-        # Display a success message and redirect to the profile page
-        messages.success(request, "Profile Updated Successfully")
-        return redirect('hodprofile')
-    # If the request method is not POST, redirect to the profile page
-    return redirect('hodprofile')
+
 
 # View function to add a new course
 @login_required(login_url='/login/')

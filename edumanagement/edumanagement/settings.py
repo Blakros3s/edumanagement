@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'app_staff',
     'app_student',
     'authentication',
+    'rest_framework',
+    'restapi',
 ]
 
 MIDDLEWARE = [
